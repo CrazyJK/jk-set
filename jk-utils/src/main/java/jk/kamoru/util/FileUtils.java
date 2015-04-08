@@ -3,6 +3,7 @@ package jk.kamoru.util;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,20 +25,20 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 * 입력된 경로의 모든 파일명을 상위폴더명+일련번호로 변경
 	 * @param basepath
 	 */
-	public static void renameToFoldername(File basepath) {
+	public static void renameToSerialNameInFolder(File basepath) {
 		Assert.isTrue(basepath.isDirectory(), "It is not directory! ");
-		File[] files = basepath.listFiles();
-		int digit = String.valueOf(files.length).length();
+		
+		Collection<File> files = FileUtils.listFiles(basepath, null, false);
+		
 		int count = 0;
-		for(File f : files) {
-			String parent = f.getParent();
-			String folder = parent.substring(parent.lastIndexOf(System.getProperty("file.separator")) + 1, parent.length());
-			String fullname = f.getName();
-			int lastIndex = fullname.lastIndexOf(".");
-			String ext = fullname.substring(lastIndex + 1);
-			String newName = folder + StringUtils.addZero(++count, digit);
-			
-			f.renameTo(new File(parent, newName + "." + ext.toLowerCase()));
+		int digit = String.valueOf(files.size() + count).length();
+		for(File file : files) {
+			if (!file.renameTo(new File(file.getParentFile(), 
+					String.format("%s-%s.%s", 
+							file.getParentFile().getName(), 
+							StringUtils.addZero(++count, digit), 
+							getExtension(file).toLowerCase()))))
+				System.out.println("Fail to rename : " + file.getAbsolutePath());
 		}
 	}
 	
@@ -201,4 +202,21 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 	}
 
+	public static void lowerExtention(File dir) {
+		int count = 0;
+		for (File file : FileUtils.listFiles(dir, null, true)) {
+			String ext = getExtension(file);
+			if (StringUtils.isAllUpperCase(ext)) {
+				count++;
+				System.out.format("%3s - %s", count, file.getName());
+				file.renameTo(new File(file.getParentFile(), file.getName().toLowerCase()));
+				System.out.format(" : %s%n", "OK");
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+//		FileUtils.lowerExtention(new File("/home/kamoru/Pictures/Girls/Girls"));
+		FileUtils.renameToSerialNameInFolder(new File("/home/kamoru/Pictures/Girls/Girls"));
+	}
 }
