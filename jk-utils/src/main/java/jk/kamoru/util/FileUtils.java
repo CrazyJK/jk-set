@@ -18,6 +18,7 @@ import jk.kamoru.JKException;
 public class FileUtils extends org.apache.commons.io.FileUtils {
 	
 	public static final String EXTENSION_SEPARATOR = ".";
+	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 	
 	/**
@@ -192,13 +193,20 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			throw new JKUtilException("params is null or size 0");
 		StringBuffer sb = new StringBuffer();
 		for (Map.Entry<String, String> entry : params.entrySet()) {
-			sb.append(entry.getKey().toUpperCase().trim()).append("=").append(entry.getValue().trim());
+			sb.append(entry.getKey().toUpperCase().trim());
+			sb.append("=");
+			sb.append(entry.getValue().trim());
+			sb.append(LINE_SEPARATOR);
 		}
 		try {
 			FileUtils.writeStringToFile(file, sb.toString(), JK.FILE_ENCODING);
 		} catch (IOException e) {
 			throw new JKUtilException("write file error", e);
 		}
+	}
+
+	public static boolean compareDrive(String path1, String path2) {
+		return StringUtils.equals(path1.substring(0, 1), path2.substring(0, 1));
 	}
 
 }
