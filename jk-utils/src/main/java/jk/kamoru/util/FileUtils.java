@@ -206,8 +206,14 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		}
 	}
 
+	/**
+	 * 두 경로가 같은 드라이브 문자로 시작되는지(윈도우만 해당)
+	 * @param path1
+	 * @param path2
+	 * @return
+	 */
 	public static boolean compareDrive(String path1, String path2) {
-		return StringUtils.equals(path1.substring(0, 1), path2.substring(0, 1));
+		return StringUtils.equals(new File(path1).getAbsolutePath().substring(0, 1), new File(path2).getAbsolutePath().substring(0, 1));
 	}
 
 	public static void lowerExtention(File dir) {

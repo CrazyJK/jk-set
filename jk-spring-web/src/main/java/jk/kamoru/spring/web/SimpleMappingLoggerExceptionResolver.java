@@ -28,7 +28,14 @@ public class SimpleMappingLoggerExceptionResolver extends SimpleMappingException
 
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-		log.error("Error - ", ex);
+		
+		// for Tomcat client abort exception
+		if ("org.apache.catalina.connector.ClientAbortException".contains(ex.getClass().getName()) ) {
+			log.error("Error - {}", ex.getMessage());
+		}
+		else {
+			log.error("Error - ", ex);
+		}
 		return super.doResolveException(request, response, handler, ex);
 	}
 
