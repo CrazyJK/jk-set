@@ -12,17 +12,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  */
 public class KamoruUserService implements UserDetailsService {
 
+	private static final String ADMIN_USER = "jk.crazy";
+	private static final String PASSWORD = "crazyjk";
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		KamoruUser user = new KamoruUser(username);
-    	user.addRole("ROLE_USER");
-    	user.addRole("ROLE_CRAZY");
-		if (user.getUsername().equals("jk.crazy")) {
-			user.addRole("ROLE_MANAGER");
-		}
-
-		return user;
+		return findUser(username);
 	}
 
+	private KamoruUser findUser(String username) {
+		KamoruUser user = new KamoruUser(username, PASSWORD, true, true, true, null);
+    	user.addRole("ROLE_USER");
+    	user.addRole("ROLE_CRAZY");
+		if (user.getUsername().equals(ADMIN_USER)) {
+			user.addRole("ROLE_MANAGER");
+		}
+		return user;
+	}
 	
 }

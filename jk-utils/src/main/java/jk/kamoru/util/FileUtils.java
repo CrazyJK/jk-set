@@ -231,6 +231,30 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	
 	public static void main(String[] args) {
 //		FileUtils.lowerExtention(new File("/home/kamoru/Pictures/Girls/Girls"));
-		FileUtils.renameToSerialNameInFolder(new File("/home/kamoru/Pictures/Girls/Girls"));
+//		FileUtils.renameToSerialNameInFolder(new File("/home/kamoru/Pictures/Girls/Girls"));
+//		File file = new File("D:\\Crazy\\Storage\\1pondo\\[1pondo][010115-001][오하시 미쿠 - 첫뒤 완전판][Miku Ohashi][2015.01.01].info");
+//		System.out.println(file.getParent() == null);
+//		System.out.println(file.getParentFile().getParentFile() == null);
+//		System.out.println(file.getParentFile().getParentFile().getParentFile() == null);
+//		System.out.println(file.getParentFile().getParentFile().getParentFile().getParentFile() == null);
+//		System.out.println(file.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile() == null);
+//		
+//		System.out.println(getRootDirectory(file));
+	}
+
+	/**최상위 폴더를 찾는다
+	 * @param delegateFile
+	 * @return
+	 */
+	public static File getRootDirectory(File file) {
+		File parent = file;
+		File root = null;
+		while (true) {
+			root = parent.getParentFile();
+			if (root == null)
+				return parent;
+			else
+				parent = root;
+		}
 	}
 }

@@ -22,14 +22,31 @@ public class KamoruUser implements UserDetails {
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 	
 	private String username;
-	private List<GrantedAuthority> authorites = new ArrayList<GrantedAuthority>();
-	private String remoteAddr;
+	private String password;
+	private boolean accountNonExpired;
+	private boolean accountNonLocked;
+	private boolean credentialsNonExpired;
+	private List<GrantedAuthority> authorites;
 	
-	public KamoruUser(String username) {
-		this.username = username;
+	public KamoruUser() {
+		super();
 	}
-
+	
+	public KamoruUser(String username, String password,
+			boolean accountNonExpired, boolean accountNonLocked,
+			boolean credentialsNonExpired, List<GrantedAuthority> authorites) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.accountNonExpired = accountNonExpired;
+		this.accountNonLocked = accountNonLocked;
+		this.credentialsNonExpired = credentialsNonExpired;
+		this.authorites = authorites;
+	}
+	
 	public void addRole(String role) {
+		if (authorites == null)
+			authorites = new ArrayList<GrantedAuthority>();
 		this.authorites.add(new SimpleGrantedAuthority(role));
 	}
 	
@@ -39,33 +56,33 @@ public class KamoruUser implements UserDetails {
 	}
 
 	@Override
-	public String getPassword() {
-		return "crazyjk";
-	}
-
-	@Override
 	public String getUsername() {
 		return username;
 	}
 
 	@Override
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return accountNonExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return accountNonLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return true;
+		return credentialsNonExpired;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return isAccountNonExpired() && isAccountNonLocked();
+		return isAccountNonExpired() && isAccountNonLocked() && isCredentialsNonExpired();
 	}
 
 	/* (non-Javadoc)
@@ -114,5 +131,4 @@ public class KamoruUser implements UserDetails {
 		return true;
 	}
 
-	
 }

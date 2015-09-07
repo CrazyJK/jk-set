@@ -1,6 +1,7 @@
 package jk.kamoru.web.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -43,6 +44,11 @@ public final class JKServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		logger.info("I'm alive!");
+		String serverUrl = String.format("%s://%s:%s%s", request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath());
+		logger.info("Serve {}", serverUrl);
+		PrintWriter out = response.getWriter();
+		out.println(String.format("Serve %s", serverUrl));
+		out.flush();
 	}
 
 }
