@@ -99,7 +99,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			if (dir.isDirectory())
 				list.addAll(listFiles(dir, extensions, recursive));
 			else
-				list.add(dir);
+				throw new JKUtilException(String.format("%s is not directory", dir.getAbsolutePath()));
 		return list;
 	}
 
@@ -177,7 +177,8 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 					map.put(strs[0], strs[1]);
 			}
 			return map;
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			throw new JKUtilException("read file error", e);
 		}
 	}
@@ -256,5 +257,23 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			else
 				parent = root;
 		}
+	}
+	
+	/**파일명으로 사용할수 없는 글자를 제거한다.<br>
+	 * <code>\ / : * ? " < > |</code>
+	 * @param name
+	 * @return
+	 */
+	public static String removeInvalidFilename(String name) {
+		name = StringUtils.remove(name, '\\');
+		name = StringUtils.remove(name, '/');
+		name = StringUtils.remove(name, ':');
+		name = StringUtils.remove(name, '*');
+		name = StringUtils.remove(name, '?');
+		name = StringUtils.remove(name, '"');
+		name = StringUtils.remove(name, '<');
+		name = StringUtils.remove(name, '>');
+		name = StringUtils.remove(name, '|');
+		return name;
 	}
 }
