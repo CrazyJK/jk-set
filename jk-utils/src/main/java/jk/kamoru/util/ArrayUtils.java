@@ -29,7 +29,7 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 	 * @param array the array to get a toString for, may be null
 	 * @return 배열의 문자열 표현
 	 */
-	public static String toStringComma(Object[] array) {
+	public static String toStringComma(Object array) {
 		return StringUtils.replaceEach(toString(array), new String[] {"{", "}"}, new String[] {"", ""});
 	}
 
