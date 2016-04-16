@@ -243,9 +243,10 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 //		System.out.println(getRootDirectory(file));
 	}
 
-	/**최상위 폴더를 찾는다
-	 * @param delegateFile
-	 * @return
+	/**
+	 * 최상위 폴더를 찾는다
+	 * @param file
+	 * @return 윈도우면 디스크 이름
 	 */
 	public static File getRootDirectory(File file) {
 		File parent = file;
